@@ -1,0 +1,38 @@
+.divsong{
+    float: top;
+}
+
+#song {
+    background-color: white;
+    border:2px solid #dbab4c ;
+    width: 200px;
+    color: #010101;
+    }
+
+   
+
+#header{
+    font-size: 40px;
+    background-color: #fdd0d2;
+    width:100%;
+    margin:0px;
+    border:10px solid #dbab4c;
+    border-radius: 20px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+}
+body{
+    background-size:repeat;
+}
+
+canvas{
+    border: 5px dashed #dbab4c;
+    margin-top: 200px;
+}
+.note{
+    padding: 10px;
+    font-size: 15px;
+    background-color:white ;
+    color: #dbab4c;
+    border-radius: 20px;
+}

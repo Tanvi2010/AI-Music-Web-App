@@ -1,21 +1,27 @@
+leftwristx = 0;
+leftwristy = 0;
+rightwristx = 0;
+rightwristy = 0;
+scoreleftwrist = 0;
+scorerightwrist = 0;
+sound1 = "";
+sound2 = "";
+song1status = "";
+song2status = "";
+
+function preload() {
+ sound1 = loadSound("Empire.mp3");
+sound2 = loadSound("How You Like That.mp3");
+}
+
 function setup() {
-    canvas = createCanvas(700, 600);
+    canvas = createCanvas(600, 500);
     canvas.center();
     Video = createCapture(VIDEO);
     Video.hide();
     poseNet = ml5.poseNet(Video, modelLoaded);
     poseNet.on("pose", gotPoses);
 }
-leftwristx = "";
-leftwristy = "";
-rightwristx = "";
-rightwristy = "";
-scoreleftwrist = "";
-scorerightwrist = "";
-sound1 = "";
-sound2 = "";
-songstatus = "";
-song2status = "";
 
 function modelLoaded() {
     console.log("model has loaded");
@@ -23,56 +29,62 @@ function modelLoaded() {
 
 function gotPoses(results) {
     if (results.length > 0) {
-        leftwristx = results[0].pose.leftWrist.x;
-        leftwristy = results[0].pose.leftWrist.y;
-        scorerightwrist = results[0].pose.keypoints[10].score;
+        console.log(results);
+
+                scorerightwrist = results[0].pose.keypoints[10].score;
         scoreleftwrist = results[0].pose.keypoints[9].score;
         console.log("score left wrist=" + scoreleftwrist + ", score right wrist=" + scorerightwrist);
+
+        leftwristx = results[0].pose.leftWrist.x;
+        leftwristy = results[0].pose.leftWrist.y;
         console.log("left wrist x=" + leftwristx + ", left wrist y=" + leftwristy);
+        
         rightwristx = results[0].pose.rightWrist.x;
         rightwristy = results[0].pose.rightWrist.y;
         console.log(" right wrist x=" + rightwristx + ",  right wrist y=" + rightwristy);
     }
-
 }
 
 
 
 function draw() {
-    image(Video, 0, 0, 700, 600);
-    sound.play();
-    sound.setVolume(0.5);
-    sound.rate(1);
-    stroke("#ff4d88");
+    image(Video, 0, 0, 600, 500);
     fill("#ff4d88");
+    stroke("#ff4d88");
+    song1status=sound1.isPlaying();
+    song2status=sound2.isPlaying();
+
     if (scoreleftwrist > 0.2) {
         circle(leftwristx, leftwristy, 30);
-        if (leftwristy > 0 && leftwristy <= 600) {
-            song2status = song2.isPlaying();
-            if (soundstatus = true) {
-                sound.stop();
+        sound1.stop();
+            if (song2status == false) {
                 sound2.play();
-                sound2.setVolume(0.5);
-                sound2.rate(1);
-            }
-        }
-    }
+                document.getElementById("song").innerHTML = "How You Like That";        
+            } }
+    
     if (scorerightwrist > 0.2) {
         circle(rightwristx, rightwristy, 30);
-        if (rightwristy > 0 && rightwristy <= 600) {
-            songstatus = song.isPlaying();
-            if (sound2status = true) {
-                sound2.stop();
-                sound.play();
-                sound.setVolume(0.5);
-                sound.rate(1);
-            }
+        sound2.stop();
+            if (song1status == false) {
+                sound1.play();
+                document.getElementById("song").innerHTML = "Empire";       
 
         }
     }
 }
 
-function preload() {
-    sound = loadSound("Empire.mp3");
-    sound2 = loadSound("How You Like That.mp3");
+function play()
+{
+    sound1.play();
+    sound1.setVolume(0.1);
+    sound1.rate(1);
+    sound2.play();
+    sound2.setVolume(1);
+    sound2.rate(1);
+}
+
+function stop()
+{
+    sound1.stop();
+    sound2.stop();
 }
